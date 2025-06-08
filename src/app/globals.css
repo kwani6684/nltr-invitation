@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-dx-type-b: 'DXTypeB';
+}
+
+body {
+  font-family: var(--font-dx-type-b), monospace;
+}
