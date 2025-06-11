@@ -53,7 +53,7 @@ export default function InfoPage() {
         <Image src='/images/poster_graffiti_revised.png' alt='파티 이미지' fill sizes='100vw' className='object-contain' priority />
       </div>
 
-      <div className='flex-1 w-full max-w-2xl mx-auto p-6'>
+      <div className='flex-1 w-full max-w-2xl mx-auto p-6 pb-32'>
         <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className='text-2xl font-bold text-white mb-8 text-center'>
           기본 정보를 입력해주세요
         </motion.h2>
