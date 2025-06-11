@@ -1,15 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { QUESTIONS } from '@/types/question';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 export default function Home() {
   const router = useRouter();
-  const [currentQuestionIndex] = useState(0);
-  const currentQuestion = QUESTIONS[currentQuestionIndex];
 
   return (
     <main className='min-h-screen bg-gradient-to-b from-gray-900 to-black'>
