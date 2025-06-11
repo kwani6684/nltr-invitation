@@ -1,118 +1,118 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { use } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { QUESTIONS } from '@/types/question';
+import QuestionForm from '@/components/QuestionForm';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
-const QUESTIONS = [
-  {
-    id: 1,
-    text: '파티의 제목을 입력해주세요',
-    image: '/images/question1.jpg',
-    placeholder: '예: 우리의 특별한 순간',
-  },
-  {
-    id: 2,
-    text: '파티의 날짜를 입력해주세요',
-    image: '/images/question2.jpg',
-    placeholder: '예: 2024년 4월 20일',
-  },
-  {
-    id: 3,
-    text: '파티의 시간을 입력해주세요',
-    image: '/images/question3.jpg',
-    placeholder: '예: 오후 2시',
-  },
-  // ... 나머지 질문들
-];
-
-export default function QuestionPage({ params }: { params: Promise<{ id: string }> }) {
+export default function QuestionPage() {
   const router = useRouter();
-  const { id } = use(params);
-  const currentId = parseInt(id);
-  const currentQuestion = QUESTIONS[currentId - 1];
-  const [answer, setAnswer] = useState('');
-
-  const handlePrev = () => {
-    if (currentId > 1) {
-      router.push(`/questions/${currentId - 1}`);
+  const params = useParams();
+  const questionId = Number(params.id);
+  const [answers, setAnswers] = useState<Record<number, string>>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('answers');
+      return saved ? JSON.parse(saved) : {};
     }
-  };
+    return {};
+  });
+
+  const currentQuestion = QUESTIONS.find((q) => q.id === questionId);
+  const isFirst = questionId === 1;
+  const isLast = questionId === QUESTIONS.length;
+
+  useEffect(() => {
+    if (!currentQuestion) {
+      router.push('/');
+    }
+  }, [currentQuestion, router]);
+
+  useEffect(() => {
+    localStorage.setItem('answers', JSON.stringify(answers));
+  }, [answers]);
 
   const handleNext = () => {
-    if (currentId < QUESTIONS.length) {
-      router.push(`/questions/${currentId + 1}`);
+    if (isLast) {
+      router.push('/questions/complete');
+      return;
+    }
+    router.push(`/questions/${questionId + 1}`);
+  };
+
+  const handlePrev = () => {
+    if (!isFirst) {
+      router.push(`/questions/${questionId - 1}`);
     }
   };
 
+  if (!currentQuestion) return null;
+
   return (
-    <main className='min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-black p-4'>
-      <div className='w-full max-w-2xl'>
-        <div className='mb-8'>
-          <div className='w-full bg-gray-800 rounded-full h-2.5 mb-2'>
+    <main className='h-screen bg-gradient-to-b from-gray-900 to-black flex flex-col'>
+      {/* 프로그레스 바 */}
+      <div className='fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm p-4'>
+        <div className='w-full max-w-2xl mx-auto'>
+          <div className='w-full bg-gray-800 rounded-full h-3 overflow-hidden'>
             <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${(currentId / QUESTIONS.length) * 100}%` }}
-              transition={{ duration: 0.3 }}
-              className='h-2.5 rounded-full bg-gradient-to-r from-gray-700 to-gray-900'
-            />
+              initial={{ width: `${((questionId - 1) / QUESTIONS.length) * 100}%` }}
+              animate={{ width: `${(questionId / QUESTIONS.length) * 100}%` }}
+              className='h-full rounded-full bg-gradient-to-r from-slate-700 to-slate-500 relative overflow-hidden'
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
+            >
+              <div className='absolute inset-0 bg-[url("/images/poster_graffiti_revised.png")] bg-cover bg-center' />
+            </motion.div>
           </div>
-          <div className='flex justify-between text-sm text-gray-400'>
-            <span>질문 {currentId}</span>
+          <div className='flex justify-between mt-2 text-sm text-gray-400'>
+            <span>질문 {questionId}</span>
             <span>총 {QUESTIONS.length}개</span>
           </div>
         </div>
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className='bg-gray-900 rounded-xl shadow-lg p-8 mb-8 border border-gray-800'
-        >
-          <div className='aspect-video relative rounded-lg overflow-hidden mb-6'>
-            <Image
-              src={currentQuestion.image}
-              alt={`질문 ${currentId} 이미지`}
-              fill
-              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-              className='object-cover'
-              priority
-            />
-          </div>
+      {/* 이미지 섹션 */}
+      <div className='relative w-full h-[35vh] flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 mt-16'>
+        <Image src='/images/poster_graffiti_revised.png' alt='파티 이미지' fill sizes='100vw' className='object-contain' priority />
+      </div>
 
-          <h2 className='text-2xl font-semibold text-gray-100 mb-4'>{currentQuestion.text}</h2>
+      {/* 질문 섹션 */}
+      <div className='flex-1 w-full py-8 px-4 pb-24'>
+        <QuestionForm
+          question={currentQuestion}
+          value={answers[questionId] || ''}
+          onChange={(value) => setAnswers((prev) => ({ ...prev, [questionId]: value }))}
+          onNext={handleNext}
+          onPrev={handlePrev}
+          isFirst={isFirst}
+          isLast={isLast}
+          hideButtons
+        />
+      </div>
 
-          <input
-            type='text'
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            className='w-full px-4 py-3 rounded-lg bg-gray-800 border-2 border-gray-700 text-gray-100 placeholder-gray-500 focus:border-gray-600 focus:outline-none'
-            placeholder={currentQuestion.placeholder}
-          />
-        </motion.div>
-
-        <div className='flex justify-between gap-4'>
-          <button
+      {/* 버튼 섹션 */}
+      <div className='fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm z-50 p-4'>
+        <div className='w-full max-w-2xl mx-auto flex gap-4'>
+          <motion.button
+            type='button'
             onClick={handlePrev}
-            disabled={currentId === 1}
-            className={`flex-1 py-3 rounded-lg ${
-              currentId === 1 ? 'bg-gray-800 cursor-not-allowed text-gray-600' : 'bg-gray-800 hover:bg-gray-700 text-gray-100'
-            } transition-colors border border-gray-700`}
+            disabled={isFirst}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`flex-1 px-6 py-3 rounded-full text-white font-medium transition-all duration-200 ${
+              isFirst ? 'opacity-50 cursor-not-allowed bg-gray-700' : 'bg-gray-800 hover:bg-gray-700'
+            }`}
           >
             이전
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             onClick={handleNext}
-            disabled={!answer.trim()}
-            className={`flex-1 py-3 rounded-lg ${
-              !answer.trim()
-                ? 'bg-gray-800 cursor-not-allowed text-gray-600'
-                : 'bg-gradient-to-r from-gray-800 to-black hover:from-gray-700 hover:to-gray-900 text-gray-100'
-            } transition-colors border border-gray-700`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className='flex-1 px-6 py-3 bg-slate-900 rounded-full text-white font-medium hover:bg-slate-800 transition-all duration-200 border border-white/30'
           >
-            {currentId === QUESTIONS.length ? '완료' : '다음'}
-          </button>
+            {isLast ? '제출하기' : '다음'}
+          </motion.button>
         </div>
       </div>
     </main>

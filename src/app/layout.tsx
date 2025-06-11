@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import { StagewiseToolbar } from '@stagewise/toolbar-next';
+import { ReactPlugin } from '@stagewise-plugins/react';
 
 const dxTypeB = localFont({
   src: '../../public/fonts/DXTypeB-KSCpc-EUC-H.ttf',
@@ -16,7 +18,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='ko' className={dxTypeB.variable}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
+      </body>
     </html>
   );
 }
