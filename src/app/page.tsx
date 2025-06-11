@@ -8,32 +8,8 @@ import Image from 'next/image';
 
 export default function Home() {
   const router = useRouter();
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, string>>({});
-  const [inputValue, setInputValue] = useState('');
-
+  const [currentQuestionIndex] = useState(0);
   const currentQuestion = QUESTIONS[currentQuestionIndex];
-  const isLastQuestion = currentQuestionIndex === QUESTIONS.length - 1;
-
-  const handleNext = () => {
-    if (inputValue.trim()) {
-      setAnswers((prev) => ({
-        ...prev,
-        [currentQuestion.id]: inputValue,
-      }));
-      setInputValue('');
-      if (!isLastQuestion) {
-        setCurrentQuestionIndex((prev) => prev + 1);
-      }
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex((prev) => prev - 1);
-      setInputValue(answers[QUESTIONS[currentQuestionIndex - 1].id] || '');
-    }
-  };
 
   return (
     <main className='min-h-screen bg-gradient-to-b from-gray-900 to-black'>
@@ -100,8 +76,8 @@ export default function Home() {
                 viewport={{ once: true }}
                 className='text-center space-y-6 whitespace-pre-line'
               >
-                '부분으로 나누다' 라는 뜻의 라틴어 partiri는 오늘날 '파티'라는 단어로 남아 있습니다. 부분으로 나누어진 삶을 살던 우리는, 각자가 지닌
-                삶의 부분을 나누고 싶게 되었습니다. 가장 비일상적인 방식으로 말이죠.
+                &lsquo;부분으로 나누다&rsquo; 라는 뜻의 라틴어 partiri는 오늘날 &lsquo;파티&rsquo;라는 단어로 남아 있습니다. 부분으로 나누어진 삶을
+                살던 우리는, 각자가 지닌 삶의 부분을 나누고 싶게 되었습니다. 가장 비일상적인 방식으로 말이죠.
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, y: 30 }}

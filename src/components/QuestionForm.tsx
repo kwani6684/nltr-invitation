@@ -32,7 +32,7 @@ export default function QuestionForm({ question, value, onChange, onNext, onPrev
     if (value.startsWith('기타: ')) {
       setOtherValue(value.replace('기타: ', ''));
     }
-  }, []);
+  }, [value]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
