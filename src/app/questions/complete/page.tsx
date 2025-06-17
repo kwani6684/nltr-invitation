@@ -73,12 +73,12 @@ export default function CompletePage() {
       setTimeout(() => {
         clearStoredData();
       }, 3000); // 3초 후 삭제
-    } catch (error: Error) {
+    } catch (error: unknown) {
       console.error('❌ 데이터 저장 실패:', error);
       setSaveStatus('error');
 
       // 사용자에게 구체적인 안내 메시지 표시
-      if (error.message.includes('보안 규칙')) {
+      if (error instanceof Error && error.message.includes('보안 규칙')) {
         console.error('💡 해결 방법: Firebase 콘솔에서 Firestore 보안 규칙을 테스트 모드로 설정해주세요.');
       }
     }

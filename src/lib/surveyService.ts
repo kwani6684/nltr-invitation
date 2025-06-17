@@ -66,16 +66,18 @@ export const saveSurveyData = async (userInfo: UserInfo, responses: SurveyRespon
     console.log('📋 저장된 데이터:', surveyData);
 
     return docRef.id;
-  } catch (error: Error) {
+  } catch (error: unknown) {
     console.error('❌ 설문 데이터 저장 실패:', error);
 
     // 구체적인 에러 메시지 제공
-    if (error.message.includes('permission-denied')) {
-      throw new Error('Firebase 보안 규칙을 확인해주세요. 쓰기 권한이 필요합니다.');
-    } else if (error.message.includes('unavailable')) {
-      throw new Error('네트워크 연결을 확인해주세요.');
-    } else if (error.message.includes('unauthenticated')) {
-      throw new Error('Firebase 설정을 확인해주세요.');
+    if (error instanceof Error) {
+      if (error.message.includes('permission-denied')) {
+        throw new Error('Firebase 보안 규칙을 확인해주세요. 쓰기 권한이 필요합니다.');
+      } else if (error.message.includes('unavailable')) {
+        throw new Error('네트워크 연결을 확인해주세요.');
+      } else if (error.message.includes('unauthenticated')) {
+        throw new Error('Firebase 설정을 확인해주세요.');
+      }
     }
 
     throw error;
