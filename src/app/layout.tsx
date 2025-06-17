@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import { Karla } from 'next/font/google';
 import './globals.css';
 import { StagewiseToolbar } from '@stagewise/toolbar-next';
 import { ReactPlugin } from '@stagewise-plugins/react';
 
-const dxTypeB = localFont({
-  src: '../../public/fonts/DXTypeB-KSCpc-EUC-H.ttf',
-  variable: '--font-dx-type-b',
+const karla = Karla({
+  subsets: ['latin'],
+  variable: '--font-karla',
   display: 'swap',
 });
 
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='ko' className={dxTypeB.variable}>
+    <html lang='ko' className={karla.variable}>
       <body>
         {children}
         <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />

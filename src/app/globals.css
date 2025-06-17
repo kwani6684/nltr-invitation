@@ -4,11 +4,11 @@
 @tailwind utilities;
 
 :root {
-  --font-dx-type-b: 'DXTypeB';
+  --font-karla: 'Karla';
 }
 
 body {
-  font-family: var(--font-dx-type-b), monospace;
+  font-family: var(--font-karla), sans-serif;
   min-height: 100vh;
   background: linear-gradient(to bottom, rgb(17 24 39), rgb(0 0 0));
 }

@@ -7,6 +7,19 @@ import QuestionForm from '@/components/QuestionForm';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
+// 사용 가능한 이미지들
+const IMAGES = [
+  '/images/IMG_8571.jpeg',
+  '/images/IMG_9147.jpeg',
+  '/images/IMG_3680.jpeg',
+  '/images/IMG_4191.jpeg',
+  '/images/IMG_4147.jpeg',
+  '/images/IMG_3755.webp',
+  '/images/IMG_2297.jpeg',
+  '/images/44464B94-B9EF-443E-8EED-4799E22DD8CB.jpeg',
+  '/images/poster_graffiti_revised.png',
+];
+
 export default function QuestionPage() {
   const router = useRouter();
   const params = useParams();
@@ -19,9 +32,16 @@ export default function QuestionPage() {
     return {};
   });
 
+  // 질문 ID를 기반으로 랜덤 이미지 선택 (일관성을 위해 seed 사용)
+  const getRandomImage = (questionId: number) => {
+    const index = questionId % IMAGES.length;
+    return IMAGES[index];
+  };
+
   const currentQuestion = QUESTIONS.find((q) => q.id === questionId);
   const isFirst = questionId === 1;
   const isLast = questionId === QUESTIONS.length;
+  const currentImage = getRandomImage(questionId);
 
   useEffect(() => {
     if (!currentQuestion) {
@@ -34,6 +54,12 @@ export default function QuestionPage() {
   }, [answers]);
 
   const handleNext = () => {
+    // 답변이 없으면 진행하지 않음
+    const currentAnswer = answers[questionId] || '';
+    if (!currentAnswer.trim()) {
+      return;
+    }
+
     if (isLast) {
       router.push('/questions/complete');
       return;
@@ -73,7 +99,7 @@ export default function QuestionPage() {
 
       {/* 이미지 섹션 */}
       <div className='relative w-full h-[35vh] flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 mt-16'>
-        <Image src='/images/poster_graffiti_revised.png' alt='파티 이미지' fill sizes='100vw' className='object-contain' priority />
+        <Image src={currentImage} alt='파티 이미지' fill sizes='100vw' className='object-contain' priority />
       </div>
 
       {/* 질문 섹션 */}
@@ -107,11 +133,14 @@ export default function QuestionPage() {
           </motion.button>
           <motion.button
             onClick={handleNext}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className='flex-1 px-6 py-3 bg-slate-900 rounded-full text-white font-medium hover:bg-slate-800 transition-all duration-200 border border-white/30'
+            disabled={!answers[questionId]?.trim()}
+            whileHover={{ scale: answers[questionId]?.trim() ? 1.05 : 1 }}
+            whileTap={{ scale: answers[questionId]?.trim() ? 0.95 : 1 }}
+            className={`flex-1 px-6 py-3 rounded-full text-white font-medium transition-all duration-200 border border-white/30 ${
+              answers[questionId]?.trim() ? 'bg-slate-900 hover:bg-slate-800' : 'bg-gray-700 opacity-50 cursor-not-allowed'
+            }`}
           >
-            {isLast ? '제출하기' : '다음'}
+            {answers[questionId]?.trim() ? (isLast ? '제출하기' : '다음') : '답변을 입력해주세요'}
           </motion.button>
         </div>
       </div>

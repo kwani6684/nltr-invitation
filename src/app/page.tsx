@@ -62,8 +62,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 className='text-center tracking-wide whitespace-pre-line'
               >
-                타인과의 만남에는 <br />
-                비일상이 전제되어 있습니다.
+                <span className='font-bold text-white'>모든 낯선 만남은 일상으로부터 우리를 떼어놓습니다.</span>
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, y: 30 }}
@@ -72,39 +71,47 @@ export default function Home() {
                 viewport={{ once: true }}
                 className='text-center space-y-6 whitespace-pre-line'
               >
-                &lsquo;부분으로 나누다&rsquo; 라는 뜻의 라틴어 partiri는 오늘날 &lsquo;파티&rsquo;라는 단어로 남아 있습니다. 부분으로 나누어진 삶을
-                살던 우리는, 각자가 지닌 삶의 부분을 나누고 싶게 되었습니다. 가장 비일상적인 방식으로 말이죠.
-              </motion.p>
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className='text-center space-y-6 whitespace-pre-line'
-              >
-                처음 듣는 음악, 처음 보는 공간과 사람들, 처음 경험하는 대화. 생각하지 못했던 접촉 속에서 혼자 조각내 묻어뒀던 꿈과 열정이 고개를 다시
-                들지도 모릅니다. 그런 일이 일어날 수 있도록, 새로운 가능성이 가득한 파티를 만들어보았습니다.
-              </motion.p>
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className='text-center space-y-6 whitespace-pre-line'
-              >
-                모자이크는 파편화된 부분 부분이 모여 아름다운 작품이 됩니다. 저희가 초대한 여러분은 각자만의 색을 선명하게 가지고 있습니다. 여러분의
-                색을 조각조각 모아 잊지 못할 저녁을 만들고자 합니다.
-              </motion.p>
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className='text-center font-semibold tracking-wide whitespace-pre-line text-3xl md:text-4xl font-["DXTypeB"] font-extrabold text-white drop-shadow-lg'
-              >
-                NTLR 파티에 오신 것을
+                저희가 준비한 파티는 <br /> 이런 비일상을 함께 즐기는 시간입니다.
                 <br />
-                환영합니다.
+                <br />
+                <span className='font-bold text-white'>
+                  처음 듣는 음악, 처음 보는 공간과 사람들,
+                  <br />
+                  처음 경험하는 대화.
+                </span>
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className='text-center space-y-6 whitespace-pre-line'
+              >
+                NTLR이 준비한 비일상적인 공간에 방문해
+                <br />
+                혼자 묻어둘 수밖에 없었던 꿈과 열정을 <br />
+                다시 꺼내볼 수 있기를 바랍니다.
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className='text-center space-y-6 whitespace-pre-line'
+              >
+                파편화된 부분 부분이 모여 <br />
+                아름다운 작품이 되는 모자이크처럼
+                <br /> <br />
+                저희는 여러분의 색을 조각조각 모아 <br /> 잊지 못할 저녁을 만들고자 합니다.
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className='text-center tracking-wide whitespace-pre-line text-3xl md:text-4xl font-["Karla"] font-extrabold text-white drop-shadow-lg'
+              >
+                <span className='font-bold text-white'>NTLR 파티에 초대합니다.</span>
               </motion.p>
             </motion.div>
           </motion.div>
@@ -125,7 +132,7 @@ export default function Home() {
           onClick={() => router.push('/questions/info')}
           className='px-8 py-4 bg-slate-900 text-white rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border border-white/30 relative before:absolute before:inset-0 before:rounded-full before:border-2 before:border-white/50 before:animate-[ping_3s_ease-in-out_infinite] before:opacity-70'
         >
-          초대장 내용 입력하기
+          파티 참가하기
         </motion.button>
       </motion.div>
     </main>
