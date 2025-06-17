@@ -32,16 +32,17 @@ export default function QuestionPage() {
     return {};
   });
 
-  // 질문 ID를 기반으로 랜덤 이미지 선택 (일관성을 위해 seed 사용)
-  const getRandomImage = (questionId: number) => {
-    const index = questionId % IMAGES.length;
-    return IMAGES[index];
-  };
+  // 진짜 랜덤 이미지 선택
+  const [currentImage, setCurrentImage] = useState<string>('');
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * IMAGES.length);
+    setCurrentImage(IMAGES[randomIndex]);
+  }, [questionId]); // 질문이 바뀔 때마다 새로운 랜덤 이미지 선택
 
   const currentQuestion = QUESTIONS.find((q) => q.id === questionId);
   const isFirst = questionId === 1;
   const isLast = questionId === QUESTIONS.length;
-  const currentImage = getRandomImage(questionId);
 
   useEffect(() => {
     if (!currentQuestion) {
@@ -99,7 +100,12 @@ export default function QuestionPage() {
 
       {/* 이미지 섹션 */}
       <div className='relative w-full h-[35vh] flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 mt-16'>
-        <Image src={currentImage} alt='파티 이미지' fill sizes='100vw' className='object-contain' priority />
+        {currentImage && <Image src={currentImage} alt='파티 이미지' fill sizes='100vw' className='object-contain' priority />}
+        {!currentImage && (
+          <div className='w-full h-full flex items-center justify-center'>
+            <div className='w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin'></div>
+          </div>
+        )}
       </div>
 
       {/* 질문 섹션 */}
