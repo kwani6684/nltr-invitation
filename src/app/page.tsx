@@ -62,7 +62,9 @@ export default function Home() {
                 viewport={{ once: true }}
                 className='text-center tracking-wide whitespace-pre-line'
               >
-                <span className='font-bold text-white'>모든 낯선 만남은 일상으로부터 우리를 떼어놓습니다.</span>
+                <span className='font-bold text-white'>
+                  모든 낯선 만남은 일상으로부터 <br /> 우리를 떼어놓습니다.
+                </span>
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, y: 30 }}

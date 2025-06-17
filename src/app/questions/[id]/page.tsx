@@ -146,7 +146,7 @@ export default function QuestionPage() {
               answers[questionId]?.trim() ? 'bg-slate-900 hover:bg-slate-800' : 'bg-gray-700 opacity-50 cursor-not-allowed'
             }`}
           >
-            {answers[questionId]?.trim() ? (isLast ? '제출하기' : '다음') : '답변을 입력해주세요'}
+            {answers[questionId]?.trim() ? (isLast ? '제출하기' : '다음') : '답변 기다리는중'}
           </motion.button>
         </div>
       </div>
