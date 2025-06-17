@@ -4,15 +4,13 @@ import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
-import { saveSurveyData, getStoredUserInfo, convertAnswersToResponses, clearStoredData } from '@/lib/surveyService';
+import { saveSurveyData, convertAnswersToResponses, clearStoredData } from '@/lib/surveyService';
 
 const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
 });
 
 export default function CompletePage() {
-  const router = useRouter();
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
     height: typeof window !== 'undefined' ? window.innerHeight : 0,
@@ -75,7 +73,7 @@ export default function CompletePage() {
       setTimeout(() => {
         clearStoredData();
       }, 3000); // 3초 후 삭제
-    } catch (error: any) {
+    } catch (error: Error) {
       console.error('❌ 데이터 저장 실패:', error);
       setSaveStatus('error');
 
@@ -269,7 +267,7 @@ export default function CompletePage() {
 
             {/* 추가 메시지 */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }} className='text-center'>
-              <p className='text-lg text-gray-300 font-["Pretendard"]'>🌟 당일 뵙겠습니다! ��</p>
+              <p className='text-lg text-gray-300 font-["Pretendard"]'>🌟 당일 뵙겠습니다! 🌟</p>
             </motion.div>
           </motion.div>
         </div>

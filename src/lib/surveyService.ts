@@ -1,5 +1,6 @@
-import { collection, addDoc, Timestamp, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { db } from './firebase';
+import { QUESTIONS } from '@/types/question';
 
 // 사용자 기본 정보 타입 (현재는 이름만 수집)
 export interface UserInfo {
@@ -65,15 +66,15 @@ export const saveSurveyData = async (userInfo: UserInfo, responses: SurveyRespon
     console.log('📋 저장된 데이터:', surveyData);
 
     return docRef.id;
-  } catch (error: any) {
+  } catch (error: Error) {
     console.error('❌ 설문 데이터 저장 실패:', error);
 
     // 구체적인 에러 메시지 제공
-    if (error.code === 'permission-denied') {
+    if (error.message.includes('permission-denied')) {
       throw new Error('Firebase 보안 규칙을 확인해주세요. 쓰기 권한이 필요합니다.');
-    } else if (error.code === 'unavailable') {
+    } else if (error.message.includes('unavailable')) {
       throw new Error('네트워크 연결을 확인해주세요.');
-    } else if (error.code === 'unauthenticated') {
+    } else if (error.message.includes('unauthenticated')) {
       throw new Error('Firebase 설정을 확인해주세요.');
     }
 
@@ -137,11 +138,8 @@ export const convertAnswersToResponses = (): SurveyResponse[] => {
     if (stored) {
       const answers = JSON.parse(stored);
 
-      // QUESTIONS 배열에서 질문 정보 가져오기
-      const { QUESTIONS } = require('@/types/question');
-
       return Object.entries(answers).map(([questionId, answer]) => {
-        const question = QUESTIONS.find((q: any) => q.id === parseInt(questionId));
+        const question = QUESTIONS.find((q) => q.id === parseInt(questionId));
         return {
           questionId,
           answer: answer as string,
