@@ -13,7 +13,7 @@ const Confetti = dynamic(() => import('react-confetti'), {
 export default function CompletePage() {
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
-    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+    height: typeof window !== 'undefined' ? Math.max(window.innerHeight, document.documentElement.scrollHeight) : 0,
   });
   const [userInfo, setUserInfo] = useState<{ name: string } | null>(null);
   const [saveStatus, setSaveStatus] = useState<'saving' | 'success' | 'error' | null>(null);
@@ -38,7 +38,7 @@ export default function CompletePage() {
       const handleResize = () => {
         setWindowSize({
           width: window.innerWidth,
-          height: window.innerHeight,
+          height: Math.max(window.innerHeight, document.documentElement.scrollHeight),
         });
       };
 
@@ -76,11 +76,6 @@ export default function CompletePage() {
     } catch (error: unknown) {
       console.error('❌ 데이터 저장 실패:', error);
       setSaveStatus('error');
-
-      // 사용자에게 구체적인 안내 메시지 표시
-      if (error instanceof Error && error.message.includes('보안 규칙')) {
-        console.error('💡 해결 방법: Firebase 콘솔에서 Firestore 보안 규칙을 테스트 모드로 설정해주세요.');
-      }
     }
   };
 
@@ -115,14 +110,13 @@ export default function CompletePage() {
                 }`}
               >
                 {saveStatus === 'saving' && '📤 응답을 저장하고 있습니다...'}
-                {saveStatus === 'success' && '✅ 응답이 성공적으로 저장되었습니다!'}
+                {saveStatus === 'success' && '✅ 답변이 성공적으로 기록되었습니다!'}
                 {saveStatus === 'error' && (
                   <div className='space-y-2'>
                     <p>❌ 응답 저장에 실패했습니다.</p>
                     <p className='text-sm opacity-80'>
-                      🔧 Firebase 콘솔에서 Firestore 보안 규칙을 확인해주세요.
                       <br />
-                      📱 또는 인터넷 연결을 확인해주세요.
+                      📱 인터넷 연결을 확인해주세요.
                     </p>
                   </div>
                 )}
@@ -261,6 +255,17 @@ export default function CompletePage() {
                   className='w-16 h-16 rounded-full overflow-hidden transition-all duration-200 shadow-lg relative'
                 >
                   <Image src='/logo/apple.png' alt='Apple Music' fill className='object-cover' />
+                </motion.a>
+
+                <motion.a
+                  href='https://www.instagram.com/nt___lr/'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className='w-16 h-16 rounded-full overflow-hidden transition-all duration-200 shadow-lg relative'
+                >
+                  <Image src='/logo/Instagram.webp' alt='Instagram' fill className='object-cover' />
                 </motion.a>
               </motion.div>
             </motion.div>

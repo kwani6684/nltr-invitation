@@ -17,7 +17,8 @@ const IMAGES = [
   '/images/IMG_3755.webp',
   '/images/IMG_2297.jpeg',
   '/images/44464B94-B9EF-443E-8EED-4799E22DD8CB.jpeg',
-  '/images/poster_graffiti_revised.png',
+  '/images/invitation_brutalist-02.png',
+  '/images/poster_shrike_2.png',
 ];
 
 export default function QuestionPage() {
