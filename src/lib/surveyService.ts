@@ -1,4 +1,4 @@
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, Timestamp, query, where, getDocs, getDoc, doc } from 'firebase/firestore';
 import { db } from './firebase';
 import { QUESTIONS } from '@/types/question';
 
@@ -162,5 +162,47 @@ export const clearStoredData = () => {
     localStorage.removeItem('answers'); // 기존 answers도 삭제
     localStorage.removeItem('surveyStartTime'); // 시작 시간도 삭제
     console.log('🗑️ 로컬 데이터 정리 완료');
+  }
+};
+
+// 이름으로 설문 데이터 검색
+export const searchSurveyByName = async (name: string) => {
+  try {
+    const surveysRef = collection(db, 'surveys');
+    const q = query(surveysRef, where('userInfo.name', '==', name));
+
+    const querySnapshot = await getDocs(q);
+
+    const results: { id: string; data: SurveyData }[] = [];
+    querySnapshot.forEach((doc) => {
+      results.push({
+        id: doc.id,
+        data: doc.data() as SurveyData,
+      });
+    });
+
+    return results;
+  } catch (error) {
+    console.error('설문 데이터 검색 실패:', error);
+    throw error;
+  }
+};
+
+// ID로 설문 데이터 조회
+export const getSurveyById = async (id: string) => {
+  try {
+    const surveyDoc = await getDoc(doc(db, 'surveys', id));
+
+    if (surveyDoc.exists()) {
+      return {
+        id: surveyDoc.id,
+        data: surveyDoc.data() as SurveyData,
+      };
+    }
+
+    return null;
+  } catch (error) {
+    console.error('설문 데이터 조회 실패:', error);
+    throw error;
   }
 };

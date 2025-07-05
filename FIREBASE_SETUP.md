@@ -34,10 +34,10 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // 테스트용 - 모든 쓰기 허용 (읽기는 제한)
+    // 테스트용 - 쓰기 허용 및 읽기 허용 (응답 검색 기능 위해 추가)
     match /surveys/{document} {
       allow write: if true;
-      allow read: if false; // 개인정보 보호
+      allow read: if true; // 응답 검색 기능을 위해 읽기 허용
     }
   }
 }
