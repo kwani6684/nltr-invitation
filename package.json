@@ -1,12 +1,24 @@
 {
   "name": "nltr-invitation",
   "version": "0.1.0",
+  "description": "NLTR 파티 초대장 및 설문조사 데스크탑 앱",
+  "author": "NLTR Team",
   "private": true,
+  "main": "main.js",
+  "homepage": "./",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "electron": "electron .",
+    "electron-dev": "NODE_ENV=development electron .",
+    "build-electron": "next build && electron-builder",
+    "dist": "npm run build && electron-builder --publish=never",
+    "dist:mac": "npm run build && electron-builder --mac --publish=never",
+    "dist:win": "npm run build && electron-builder --win --publish=never",
+    "dist:linux": "npm run build && electron-builder --linux --publish=never",
+    "pack": "npm run build && electron-builder --dir"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -26,10 +38,115 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.17",
+    "electron": "^37.2.3",
+    "electron-builder": "^26.0.12",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
+    "next-electron-server": "^1.0.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "build": {
+    "appId": "com.nltr.invitation",
+    "productName": "NLTR Invitation",
+    "copyright": "Copyright © 2025 NLTR",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "main.js",
+      "preload.js",
+      "package.json",
+      {
+        "from": "node_modules",
+        "to": "node_modules",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "extraResources": [
+      {
+        "from": "public",
+        "to": "public"
+      }
+    ],
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "public/logo/apple.png",
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "public/logo/apple.png",
+      "publisherName": "NLTR Team"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "public/logo/apple.png",
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "NLTR Invitation"
+    },
+    "dmg": {
+      "title": "NLTR Invitation ${version}",
+      "icon": "public/logo/apple.png",
+      "background": "public/images/invitation_brutalist-02.png",
+      "window": {
+        "width": 600,
+        "height": 400
+      },
+      "contents": [
+        {
+          "x": 150,
+          "y": 200,
+          "type": "file"
+        },
+        {
+          "x": 450,
+          "y": 200,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "YOUR_USERNAME",
+      "repo": "nltr-invitation"
+    }
   }
 }

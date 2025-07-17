@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { ArrowDownTrayIcon, ComputerDesktopIcon } from '@heroicons/react/24/outline';
 
 export default function Home() {
   const router = useRouter();
@@ -43,6 +44,86 @@ export default function Home() {
           남파티
         </motion.h2>
       </div>
+
+      {/* 데스크탑 앱 다운로드 섹션 */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        viewport={{ once: true }}
+        className='w-full bg-gradient-to-r from-slate-800 to-slate-700 px-4 py-12 border-y border-white/10'
+      >
+        <div className='max-w-4xl mx-auto text-center'>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className='flex items-center justify-center gap-3 mb-6'
+          >
+            <ComputerDesktopIcon className='h-8 w-8 text-blue-400' />
+            <h3 className='text-2xl md:text-3xl font-bold text-white'>데스크탑 앱으로 참여하기</h3>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className='text-gray-300 text-lg mb-8 max-w-2xl mx-auto'
+          >
+            더 편리한 경험을 위해 데스크탑 앱을 다운로드하여 사용하실 수 있습니다.
+            <br />
+            오프라인에서도 작성한 내용이 저장됩니다.
+          </motion.p>
+
+          <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
+            <motion.a
+              href='https://github.com/YOUR_USERNAME/nltr-invitation/releases/latest/download/NLTR-Invitation-0.1.0.dmg'
+              target='_blank'
+              rel='noopener noreferrer'
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className='flex items-center gap-3 px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl'
+            >
+              <ArrowDownTrayIcon className='h-5 w-5' />
+              <span className='font-semibold'>macOS용 다운로드</span>
+              <span className='text-sm text-gray-300'>(.dmg)</span>
+            </motion.a>
+
+            <motion.a
+              href='https://github.com/YOUR_USERNAME/nltr-invitation/releases/latest/download/NLTR-Invitation-Setup-0.1.0.exe'
+              target='_blank'
+              rel='noopener noreferrer'
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className='flex items-center gap-3 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl'
+            >
+              <ArrowDownTrayIcon className='h-5 w-5' />
+              <span className='font-semibold'>Windows용 다운로드</span>
+              <span className='text-sm text-blue-100'>(.exe)</span>
+            </motion.a>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className='mt-6 text-sm text-gray-400'
+          >
+            <p>시스템 요구사항: macOS 10.15+ 또는 Windows 10+</p>
+            <a
+              href='https://github.com/YOUR_USERNAME/nltr-invitation/releases'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='text-blue-400 hover:text-blue-300 underline'
+            >
+              모든 릴리스 보기
+            </a>
+          </motion.div>
+        </div>
+      </motion.div>
 
       {/* 설명/버튼 섹션 */}
       <div className='relative w-full bg-gradient-to-b from-gray-900 to-black px-4 pb-32 pt-8'>
