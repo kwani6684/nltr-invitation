@@ -48,19 +48,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build Next.js app
-        run: pnpm run build
-
       - name: Build Electron app (macOS)
         if: matrix.os == 'macos-latest'
         run: pnpm run dist
         env:
+          ELECTRON_BUILD: true
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Electron app (Windows)
         if: matrix.os == 'windows-latest'
         run: pnpm run dist
         env:
+          ELECTRON_BUILD: true
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload macOS artifacts
