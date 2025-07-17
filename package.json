@@ -68,9 +68,7 @@
         "to": "public"
       }
     ],
-    "asar": {
-      "smartUnpack": false
-    },
+    "asar": false,
     "npmRebuild": false,
     "nodeGypRebuild": false,
     "mac": {
