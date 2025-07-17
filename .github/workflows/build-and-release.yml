@@ -12,12 +12,9 @@ on:
         default: 'v0.1.0'
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest]
+  build-macos:
+    runs-on: macos-latest
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v4
@@ -45,45 +42,96 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Cache Electron
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/electron
+          key: ${{ runner.os }}-electron-cache-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-electron-cache-
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
       - name: Build Electron app (macOS)
-        if: matrix.os == 'macos-latest'
-        run: pnpm run dist
+        run: pnpm run dist:mac
         env:
           ELECTRON_BUILD: true
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build Electron app (Windows)
-        if: matrix.os == 'windows-latest'
-        run: pnpm run dist
-        env:
-          ELECTRON_BUILD: true
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ELECTRON_CACHE: ~/.cache/electron
 
       - name: Upload macOS artifacts
-        if: matrix.os == 'macos-latest'
         uses: actions/upload-artifact@v4
         with:
           name: macos-app
           path: |
             release/*.dmg
             release/*.zip
+            release/*.dmg.blockmap
+          retention-days: 7
+
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Cache Electron
+        uses: actions/cache@v4
+        with:
+          path: ~\AppData\Local\electron\Cache
+          key: ${{ runner.os }}-electron-cache-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-electron-cache-
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build Electron app (Windows)
+        run: pnpm run dist:win
+        env:
+          ELECTRON_BUILD: true
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Windows artifacts
-        if: matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v4
         with:
           name: windows-app
           path: |
             release/*.exe
             release/*.zip
+            release/*.exe.blockmap
+          retention-days: 7
 
   release:
-    needs: build
+    needs: [build-macos, build-windows]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4

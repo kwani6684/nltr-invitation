@@ -79,7 +79,7 @@ export default function Home() {
 
           <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
             <motion.a
-              href='https://github.com/YOUR_USERNAME/nltr-invitation/releases/latest/download/NLTR-Invitation-0.1.0.dmg'
+              href='https://github.com/kwani6684/nltr-invitation/releases/latest/download/NLTR-Invitation-0.1.0.dmg'
               target='_blank'
               rel='noopener noreferrer'
               whileHover={{ scale: 1.05, y: -2 }}
@@ -92,7 +92,7 @@ export default function Home() {
             </motion.a>
 
             <motion.a
-              href='https://github.com/YOUR_USERNAME/nltr-invitation/releases/latest/download/NLTR-Invitation-Setup-0.1.0.exe'
+              href='https://github.com/kwani6684/nltr-invitation/releases/latest/download/NLTR-Invitation-Setup-0.1.0.exe'
               target='_blank'
               rel='noopener noreferrer'
               whileHover={{ scale: 1.05, y: -2 }}
@@ -114,7 +114,7 @@ export default function Home() {
           >
             <p>시스템 요구사항: macOS 10.15+ 또는 Windows 10+</p>
             <a
-              href='https://github.com/YOUR_USERNAME/nltr-invitation/releases'
+              href='https://github.com/kwani6684/nltr-invitation/releases'
               target='_blank'
               rel='noopener noreferrer'
               className='text-blue-400 hover:text-blue-300 underline'
